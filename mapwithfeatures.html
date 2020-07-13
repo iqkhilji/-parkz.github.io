@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <style type="text/css">
+       #map-canvas{
+           height:500px;
+       }
+   </style>
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtj0IEO-Sto2DcUK2PfuP5LgHq-S9KsZI&libraries=places&sensor=false">
+    </script>
+<script type="text/javascript">
+     var map;
+    var service;
+
+    function handleSearchResults(results,status) {
+        console.log(results);
+        for (var i = 0; i < results.length; i++) {
+            var marker = new google.maps.Marker({
+                position: results[i].geometry.location,
+               // url:'http://facebook.com/',
+                map: map,
+                 icon:results[i].icon
+
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+                window.location.href ='http://localhost/car parking project downloaded/carparking/your-car.php';
+            });
+
+        }
+    }
+    function performSearch()
+    {
+        var request={
+            bounds:map.getBounds(),
+            name:"Parking "
+        }
+
+        service.nearbySearch(request,handleSearchResults);
+    }
+     function initialise(location){
+
+
+        console.log(location);
+       var currentLocation=new google.maps.LatLng(location.coords.latitude,location.coords.longitude);
+        var mapOptions ={
+            center:currentLocation ,
+            zoom:13,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+    map= new google.maps.Map(document.getElementById("map-canvas"),
+    mapOptions);
+      var marker=new google.maps. Marker({
+      position:currentLocation,
+      map:map
+      });
+    service=new google.maps.places.PlacesService(map);
+
+    google.maps.event.addListenerOnce(map,'bounds_changed',performSearch);
+
+    $('#refresh').click(performSearch);
+
+    var circleOptions={
+        strokeColor:"#0000FF",
+        strokeOpacity:0.8,
+        strokeWeight:1.5,
+        fillColor:"#000FFF",
+        fillOpacity:0.35,
+        map:map,
+        center:currentLocation,
+        radius:5000
+    };
+    var circle=new google.maps.Circle(circleOptions);
+    //traffic
+        var trafficLayer=new google.maps.TrafficLayer();
+         $('#toggle_traffic').click(function(){
+             if(trafficLayer.getMap()){
+                 trafficLayer.setMap(null);
+             }else{
+                 trafficLayer.setMap(map);
+             }
+         });
+    }
+
+     $( document ).ready(function()
+        {
+navigator.geolocation.getCurrentPosition(initialise);
+        },
+     function error(msg){
+
+         alert('Please enable your GPS position future.');
+
+     },{maximumAge:10000, timeout:5000, enableHighAccuracy: false}
+        )
+</script>
+</head>
+<body>
+<div id="map-canvas"></div>
+<button id="refresh">Refresh</button>
+<button id="toggle_traffic">Traffic</button>
+<button id="toggle_weather">Weather</button>
+</body>
+</html>
