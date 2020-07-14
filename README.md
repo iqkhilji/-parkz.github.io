@@ -2,5 +2,5 @@
 
 An online based parking booking system 
 
-authors: Ishfaque Qamar Khilji
-     
+Developer: Ishfaque Qamar Khilji
+Co-developer:Kamonashish Saha     
