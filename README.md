@@ -1,3 +1,3 @@
 # carparking prototype
-authors: Ishfaque Qamar Khilji
-         Kamonashish Saha
+authors: 1.Ishfaque Qamar Khilji;
+         2.Kamonashish Saha
